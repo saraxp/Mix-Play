@@ -31,23 +31,70 @@ body {
   position: relative;
 }
 
-/* MUSIC PLAYER SECTION */
 
+/* MUSIC PLAYER SECTION */
 .music-player {
   flex-grow: 1;
   transition: width 0.3s ease;
-  background: rgb(12, 20, 19);
   height: 100vh;
   display: flex;
   flex-direction: column;
+
+  /* For animated background */
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(12, 20, 19); 
+  color: white;
+  --color-a: rgb(59, 118, 108);
+  --color-b: rgb(97, 183, 169);
+  --color-c: rgb(169, 208, 201);
+  
 }
 
+.music-player::before,
+.music-player::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, var(--color-a), var(--color-b), var(--color-c));
+  opacity: 0.15;
+  filter: blur(100px);
+  border-radius: 50%;
+  transform-origin: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.music-player::before {
+  top: -40%;
+  left: -30%;
+  animation: blob 8s infinite ease-in-out;
+}
+
+.music-player::after {
+  top: -10%;
+  left: 20%;
+  animation: blob 12s infinite ease-in-out reverse;
+}
+
+@keyframes blob {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(60px, 80px) scale(1.2); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+
 /* SEARCH BAR */
-.search-bar-main, .search-bar-panel {
+.search-bar-main{
+  padding: 20px;
+  background: transparent;
+}
+
+.search-bar-panel {
   padding: 20px;
   background: rgb(12, 20, 19);
 }
-
 
 #searchInputMain{
   width: 20%;
@@ -75,11 +122,12 @@ body {
 }
 
 #searchInputMain:focus, #searchInputPanel:focus {
-  border-color: #007bff;
+  border-color: rgb(97, 183, 169);
   background: rgb(12, 20, 19);
   color: rgb(232, 240, 239);
   box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
 }
+
 
 /* MUSIC CONTROL UI */
 .music-control-ui {
@@ -90,6 +138,8 @@ body {
   justify-content: center;
   padding: 40px;
   text-align: center;
+  background-color: transparent;
+  z-index: 1;
 }
 
 .album-art-container {
@@ -112,7 +162,6 @@ body {
   object-fit: cover;
 }
 
-
 .album-art.hidden {
   opacity: 0;
   pointer-events: none;
@@ -130,24 +179,27 @@ body {
   display: none;
 }
 
+
 /* PROGRESS BAR */
 .progress-container {
   width: 100%;
   max-width: 400px;
-  height: 6px;
-  background: #f0f0f0;
-  border-radius: 3px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
   margin: 20px 0;
   overflow: hidden;
 }
 
 .progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #007bff, #0056b3);
   width: 0%;
+  background: white;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3); 
+  border-radius: 4px;
   transition: width 0.3s ease;
-  border-radius: 3px;
 }
+
 
 /* SONG INFO */
 .song-name {
@@ -170,7 +222,6 @@ body {
   gap: 20px;
 }
 
-
 .change-button, .play-button {
   padding: 12px 24px;
   border: none;
@@ -186,25 +237,10 @@ body {
   padding: 15px 30px;
 }
 
-/*
-.play-button:hover {
-  background: #0056b3;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,123,255,0.4);
-}
-*/
-
 .change-button {
   background: transparent;
   padding: 15px 30px;
 }
-
-/*
-.change-button:hover {
-  background: #e9ecef;
-  transform: translateY(-1px);
-}
-*/
 
 
 /* SIDE PANELS */
@@ -221,8 +257,6 @@ body {
   display: flex;
   flex-direction: column;
 }
-
-
 
 .search-panel .search-bar {
   border-bottom: 1px solid #eee;
@@ -242,33 +276,33 @@ body {
 }
 
 .top-artist-card {
-  /* Set dimensions for your card */
-  width: 30em; /* Example: Adjust to your desired card width (e.g., 100% for full width) */
-  background-color: rgb(12, 20, 19); /* Important: Match this with the gradient end color */
-  border-radius: 8px;
-  display: flex; /* Use Flexbox for side-by-side layout */
-  overflow: hidden; /* Important for containing background images/content */
-  height: 300px; /* Fixed height for the entire card */
-  margin: 20px auto; /* Center the card on the page */
+  width: 45em; 
+  border-radius: 6em 1em;
+  background-color: rgb(12, 20, 19); 
+  border:solid;
+  border-color: rgb(97, 183, 169);
+  border-width:1px;
+  display: flex;
+  overflow: hidden; 
+  height: 290px;
+  margin: 20px auto; 
 }
 
-
 .artist-image-with-fade {
-  flex: 0 0 60%; /* Image takes 40% of the card's width */
-  /* You could also use a fixed width like '180px' if you prefer */
-  
+  flex: 0 0 40%; 
   background-size: cover; 
-  background-position: center center; /* Center the image within its area */
+  background-position: center center; 
   background-repeat: no-repeat;
 }
 
 .top-artist-name {
-  flex: 1; /* Takes up the remaining space */
-  padding: 0px; /* Spacing around the text and button */
+  flex: 1;
+  padding: 0px;
+  margin-left: 6em; 
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Vertically center content */
-  align-items: flex-start; /* Align text to the left */
+  justify-content: center; 
+  align-items: flex-start; 
 }
 
 .top-artist {
@@ -286,7 +320,7 @@ body {
   font-size: 18px;
   font-weight: 600;
   border-bottom: 1px solid rgba(232, 240, 239, 0.2);
-  padding-bottom: 8px;
+  padding-bottom: 15px;
 }
 
 .artist-card, .track-card, .album-card {
@@ -339,36 +373,35 @@ body {
 /* FULL VIEW STYLING */
 #backToSummaryBtn {
   background: rgb(12, 20, 19);
-  border: 1px solid #dee2e6;
+  text-align: left;
+  border:none;
   color: rgb(232, 240, 239);
-  padding: 12px 20px;
-  border-radius: 8px;
   cursor: pointer;
   margin: 20px;
-  font-size: 14px;
   transition: all 0.3s ease;
 }
 
-/*
-#backToSummaryBtn:hover {
-  background: #e9ecef;
+.songsList, .artistsList, .albumsList {
+  margin-bottom: 10px;
 }
-*/
+
 
 /* ALBUM TRACKS STYLING */
 .album-header {
   padding: 20px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #eee;
   background: rgb(12, 20, 19);
 }
 
 .album-header h3 {
   margin: 10px 0 5px 0;
-  font-size: 20px;
+  font-size: 40px;
   color:rgb(232, 240, 239);
 }
 
 .album-header p {
+  font-size: 15px;
   margin: 5px 0;
   color:rgb(232, 240, 239);
 }
@@ -381,6 +414,9 @@ body {
   cursor: pointer;
   margin-bottom: 15px;
   font-size: 14px;
+  display:flex;
+  align-items: center;
+  justify-items:center;
   transition: all 0.3s ease;
 }
 

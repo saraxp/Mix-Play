@@ -37,14 +37,13 @@
                     <button class = "change-button" id = "nextButton">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="rgb(232, 240, 239)" viewBox="0 0 256 256"><path d="M208,40V216a8,8,0,0,1-16,0V146.77L72.43,221.55A15.95,15.95,0,0,1,48,208.12V47.88A15.95,15.95,0,0,1,72.43,34.45L192,109.23V40a8,8,0,0,1,16,0Z"></path></svg>
                     </button>
-                    <!--<button class="repeat-button" id = "repeatSongButton">repeat</button>-->
                 </div> 
             </div>
             <div id="youtubePlayer"></div>
         </div>
         <div class ="search-panel hidden" id="searchPanel">
             <!-- OPENS AS A SIDE PANEL WHEN SOMETHING IS SEARCHED FOR. 
-             SEARCH BAR GOES INSIDE, PANEL CLOSES WHEN TAPPED ANYWHER ELSE ON THE SCREEN.
+             SEARCH BAR GOES INSIDE, PANEL CLOSES WHEN TAPPED ANYWHERE ELSE ON THE SCREEN.
              THE MUSIC PLAYER PART ADJUSTS ITSELF ACCORDINGLY.
              -->
             <form class="search-bar-panel" id="searchBarPanel">
@@ -57,7 +56,9 @@
             </div>
         </div>
         <div id="fullView" class="full-view hidden">
-            <button id="backToSummaryBtn">← Back</button>
+            <button id="backToSummaryBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="rgb(232, 240, 239)" viewBox="0 0 256 256"><path d="M205.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L131.31,128ZM51.31,128l74.35-74.34a8,8,0,0,0-11.32-11.32l-80,80a8,8,0,0,0,0,11.32l80,80a8,8,0,0,0,11.32-11.32Z"></path></svg>
+            </button>
             <div id="fullList" class="scrollable-list"></div>
         </div>
         

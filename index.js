@@ -45,7 +45,7 @@ form1.addEventListener('submit', async function(e) {
 
     if (query !== "") {
         await performSearch(query);
-        showSearchPanelOnly(); // ✅ Cleaner
+        showSearchPanelOnly(); 
         searchInputPanel.focus();
     }
 });
@@ -57,8 +57,8 @@ form2.addEventListener('submit', async function(e) {
     
     if (query !== "") {
         await performSearch(query);
-        showSearchPanelOnly();  // ✅ Safe way to re-lock UI to panel mode
-        searchInputPanel.focus(); // optional, for nice UX
+        showSearchPanelOnly();  
+        searchInputPanel.focus(); 
     }
 });
 
@@ -99,7 +99,6 @@ async function performSearch(query) {
         console.error("API error:", err);
     }
 }
-
 
 
 /* HELPER FUNCTIONS */
@@ -178,7 +177,7 @@ function renderTracks(tracks) {
   section.innerHTML = "";
 
   if (tracks.length > 0) {
-    section.innerHTML = "<h3>Songs</h3>";
+    section.innerHTML = "<h3 class='songsList'>Songs</h3>";
     tracks.slice(0, 5).forEach(track => {
       const div = document.createElement("div");
       div.classList.add("track-card");
@@ -198,7 +197,7 @@ function renderTracks(tracks) {
       document.getElementById("searchPanel").classList.add("hidden");
       fullView.classList.remove("hidden");
 
-      fullList.innerHTML = "";
+      fullList.innerHTML = "<h3 class='songsList'>Songs</h3>";
       tracks.forEach(track => {
         const div = document.createElement("div");
         div.classList.add("track-card");
@@ -233,7 +232,7 @@ async function renderArtists(artists) {
         return;
     }
 
-    section.innerHTML = "<h3>Artists</h3>";
+    section.innerHTML = "<h3 class='artistsList'>Artists</h3>";
 
     // Top artist match
     const topArtist = artists[0];
@@ -272,7 +271,7 @@ async function renderArtists(artists) {
         document.getElementById("searchPanel").classList.add("hidden");
         fullView.classList.remove("hidden");
 
-        fullList.innerHTML = "<h3>Artists</h3>";
+        fullList.innerHTML = "<h3 class='artistsList'>Artists</h3>";
         artists.forEach(artist => {
             fullList.innerHTML += `<div class="artist-card">${artist.name}</div>`;
         });
@@ -300,7 +299,7 @@ function renderAlbums(albums) {
         return;
     }
 
-    section.innerHTML = "<h3>Albums</h3>";
+    section.innerHTML = "<h3 class='albumsList'>Albums</h3>";
     albums.slice(0, 3).forEach(album => {
         const albumCard = document.createElement('div');
         albumCard.classList.add('album-card');
@@ -316,8 +315,6 @@ function renderAlbums(albums) {
     showMoreBtn.addEventListener("click", () => {
         document.getElementById("searchPanel").classList.add("hidden");
         fullView.classList.remove("hidden");
-
-        // Use the new function to render clickable albums
         renderAlbumsInFullView();
 
         if (!fullView.classList.contains("hidden") && searchPanel.classList.contains("hidden")) {
@@ -332,13 +329,13 @@ function renderAlbums(albums) {
 function renderAlbumsInFullView() {
     const fullList = document.getElementById("fullList");
     
-    fullList.innerHTML = "<h3>Albums</h3>";
+    fullList.innerHTML = "<h3 class='albumsList'>Albums</h3>";
     globalAlbumList.forEach(album => {
         const albumDiv = document.createElement('div');
         albumDiv.classList.add('album-card', 'clickable-album');
         albumDiv.innerHTML = `<h4>${album.name}</h4><p style="font-size:15px; margin-top:2px;">${album.artist}</p>`;
         
-        // Add click handler to show album tracks
+      
         albumDiv.addEventListener('click', () => {
             showAlbumTracks(album.name, album.artist);
         });
@@ -346,6 +343,7 @@ function renderAlbumsInFullView() {
         fullList.appendChild(albumDiv);
     });
 }
+
 // Function to get album tracks using album.getInfo
 async function getAlbumTracks(artistName, albumName) {
     const albumInfoUrl = `${LF_baseUrl}?method=album.getInfo&artist=${encodeURIComponent(artistName)}&album=${encodeURIComponent(albumName)}&api_key=${LAST_FM_API_KEY}&format=${format}`;
@@ -420,7 +418,7 @@ async function showAlbumTracks(albumName, artistName) {
             </div>
         `;
         
-        // Add click handlers for tracks
+        
         if (tracks.length > 0) {
             const trackItems = fullList.querySelectorAll('.track-item');
             trackItems.forEach(item => {
@@ -464,23 +462,21 @@ async function playTrack(track) {
     const playButton = document.getElementById("playButton");
     const trackInfo = `${LF_baseUrl}?method=track.getInfo&artist=${track.artist}&track=${track.name}&api_key=${LAST_FM_API_KEY}&format=${format}`;
 
-    // 🧹 Reset progress
-    stopProgressUpdater(); // stop old interval
+  
+    stopProgressUpdater(); 
     progressBar.style.width = "0%";
 
     try {
-        // 🔎 Fetch YouTube video
         const ytRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(songQuery)}&key=${YT_API_KEY}&maxResults=1&type=video`);
         const ytData = await ytRes.json();
         const videoId = ytData.items?.[0]?.id?.videoId;
 
         console.log("YouTube video ID:", videoId);
 
-        // 🎨 Album Art Logic
+
         try {
             let albumArtUrl = null;
 
-            // 1. Try track.getInfo
             const albumArtFetch = await fetch(trackInfo);
             const trackData = await albumArtFetch.json();
 
@@ -489,12 +485,10 @@ async function playTrack(track) {
                 albumArtUrl = imageObj?.['#text'] || null;
             }
 
-            // 2. Fallback to search result matching
             if (!albumArtUrl) {
                 albumArtUrl = findAlbumArtFromSearch(track.name, track.artist);
             }
 
-            // 3. Fallback to artist.getTopAlbums
             if (!albumArtUrl) {
                 const topAlbumUrl = `${LF_baseUrl}?method=artist.getTopAlbums&artist=${encodeURIComponent(track.artist)}&api_key=${LAST_FM_API_KEY}&format=${format}&limit=1`;
                 const topAlbumRes = await fetch(topAlbumUrl);
@@ -503,7 +497,6 @@ async function playTrack(track) {
                 albumArtUrl = await getAlbumArtByName(track.artist, topAlbum?.name);
             }
 
-            // ✅ Set the image
             if (albumArtUrl && albumArtUrl !== "") {
                 albumArt.src = albumArtUrl;
                 document.getElementById("albumArtContainer").classList.remove("hidden");
@@ -521,18 +514,15 @@ async function playTrack(track) {
             albumArt.src = "fallback.jpg";
         }
 
-        // 📝 Update UI Text
         songName.textContent = track.name;
         artistName.textContent = track.artist;
 
-        // ▶️ Start playback
         if (videoId && ytPlayer?.loadVideoById) {
             ytPlayer.loadVideoById(videoId);
-            ytPlayer.playVideo();             // force play
-            isPlaying = true;                 // reset global state
-            startProgressUpdater();          // start progress update loop
+            ytPlayer.playVideo();             
+            isPlaying = true;                 
+            startProgressUpdater();          
 
-            // 🎯 Update play button icon to PAUSE
             playButton.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="rgb(232, 240, 239)" viewBox="0 0 256 256">
                 <path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/>
@@ -565,7 +555,7 @@ function handleSongClick(track) {
 
 // progress bar functions
 function startProgressUpdater() {
-  clearInterval(progressInterval); // Clear old interval if any
+  clearInterval(progressInterval); 
   progressInterval = setInterval(() => {
     if (ytPlayer && ytPlayer.getCurrentTime && ytPlayer.getDuration) {
       const currentTime = ytPlayer.getCurrentTime();
@@ -576,7 +566,7 @@ function startProgressUpdater() {
         document.getElementById("progressBar").style.width = `${progressPercent}%`;
       }
     }
-  }, 500); // update every 0.5s
+  }, 500); 
 }
 
 function stopProgressUpdater() {
@@ -600,7 +590,6 @@ document.getElementById("prevButton").addEventListener("click", () => {
 
 function onPlayerStateChange(event) {
   if (event.data === YT.PlayerState.ENDED) {
-    // Auto-play next song
     document.getElementById("nextButton").click();
   }
 }
