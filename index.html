@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <script src="index.js" defer></script>
+    <script>
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(tag);
+    </script>
+    <title>Music Player</title>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="music-player" id = "musicPlayer">
+            <form class="search-bar-main" id="searchBarMain">
+                <input class = "search-input" id = "searchInputMain" type="search" placeholder="Search songs, albums or artists" autocomplete="off">
+            </form>
+            <div class="music-control-ui">
+                <div class="album-art-container" id="albumArtContainer">
+                    <img class="album-art" id="albumArt" src="" alt="Album Art">
+                </div>
+                <p class="song-name" id="songName">Not playing</p>
+                <p class="artist-name" id="artistName"></p>
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="song-control" id="songControl">
+                    <button class = "change-button" id = "prevButton">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="rgb(232, 240, 239)" viewBox="0 0 256 256"><path d="M208,47.88V208.12a16,16,0,0,1-24.43,13.43L64,146.77V216a8,8,0,0,1-16,0V40a8,8,0,0,1,16,0v69.23L183.57,34.45A15.95,15.95,0,0,1,208,47.88Z"></path></svg>
+                    </button>
+                    <button class = "play-button" id = "playButton">
+                        <svg class="play-symbol" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="rgb(232, 240, 239)" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"></path></svg>
+                    </button>
+                    <button class = "change-button" id = "nextButton">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="rgb(232, 240, 239)" viewBox="0 0 256 256"><path d="M208,40V216a8,8,0,0,1-16,0V146.77L72.43,221.55A15.95,15.95,0,0,1,48,208.12V47.88A15.95,15.95,0,0,1,72.43,34.45L192,109.23V40a8,8,0,0,1,16,0Z"></path></svg>
+                    </button>
+                    <!--<button class="repeat-button" id = "repeatSongButton">repeat</button>-->
+                </div> 
+            </div>
+            <div id="youtubePlayer"></div>
+        </div>
+        <div class ="search-panel hidden" id="searchPanel">
+            <!-- OPENS AS A SIDE PANEL WHEN SOMETHING IS SEARCHED FOR. 
+             SEARCH BAR GOES INSIDE, PANEL CLOSES WHEN TAPPED ANYWHER ELSE ON THE SCREEN.
+             THE MUSIC PLAYER PART ADJUSTS ITSELF ACCORDINGLY.
+             -->
+            <form class="search-bar-panel" id="searchBarPanel">
+                <input class = "search-input" id = "searchInputPanel" type="search" placeholder="Search songs, albums or artists" autocomplete="off">
+            </form>
+            <div class = "search-results" id = "results">
+                <div id="artistsSection"></div>
+                <div id="songsSection"></div>
+                <div id="albumsSection"></div>             
+            </div>
+        </div>
+        <div id="fullView" class="full-view hidden">
+            <button id="backToSummaryBtn">← Back</button>
+            <div id="fullList" class="scrollable-list"></div>
+        </div>
+        
+    </div>
+
+</body>
+</html>
