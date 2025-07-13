@@ -13,19 +13,21 @@ A sleek, modern music player that integrates the Last.fm API for music discovery
 * Animated Background: Dynamic gradient animations for an immersive experience
 
 ## Project Structure
+```
 Mix-Play/
 ├── index.html          # Main HTML structure and YouTube API setup
 ├── index.css           # Complete styling with animations and responsive design
 ├── index.js            # Core JavaScript functionality and API integration
 ├── README.md           # Project documentation
 └── preview/            # images of the project
+```
 
 ## Preview
 
-<img src="preview/one.png" alt width="400px"> 
-<img src="preview/two.png" alt width="400px"> 
-<img src="preview/three.png" alt width="400px"> 
-<img src="preview/four.png" alt width="400px"> 
+<img src="preview/one.png"> 
+<img src="preview/two.png"> 
+<img src="preview/three.png"> 
+<img src="preview/four.png"> 
 
 ## Technologies Used
 
