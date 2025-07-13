@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
 /* green theme
 --text: rgb(232, 240, 239);
 --background: rgb(12, 20, 19);
@@ -13,7 +15,7 @@
 }
 
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'DM Sans', sans-serif;
   background: rgb(12, 20, 19);
   color: rgb(232, 240, 239);
   overflow: hidden;
