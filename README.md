@@ -19,15 +19,15 @@ Mix-Play/
 ├── index.css           # Complete styling with animations and responsive design
 ├── index.js            # Core JavaScript functionality and API integration
 ├── README.md           # Project documentation
-└── preview/            # images of the project
+└── Preview/            # images of the project
 ```
 
 ## Preview
 
-<img src="preview/one.png"> 
-<img src="preview/two.png"> 
-<img src="preview/three.png"> 
-<img src="preview/four.png"> 
+<img src="Preview/one.png"> 
+<img src="Preview/two.png"> 
+<img src="Preview/three.png"> 
+<img src="Preview/four.png"> 
 
 ## Technologies Used
 
