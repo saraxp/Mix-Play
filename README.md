@@ -24,10 +24,10 @@ Mix-Play/
 
 ## Preview
 
-<img src="Preview/one.png"> 
-<img src="Preview/two.png"> 
-<img src="Preview/three.png"> 
-<img src="Preview/four.png"> 
+<img src="Preview/one.png" alt width="500px"> 
+<img src="Preview/two.png" alt width="500px"> 
+<img src="Preview/three.png" alt width="500px"> 
+<img src="Preview/four.png" alt width="500px"> 
 
 ## Technologies Used
 
