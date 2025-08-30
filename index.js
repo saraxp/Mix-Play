@@ -1,7 +1,3 @@
-/* API KEYS */
-const YT_API_KEY = "Your YT API Key";
-const LAST_FM_API_KEY = "Your Lastfm API Key";
-
 /* SOME ELEMENTS */
 const searchBarMain = document.getElementById("searchBarMain");
 const searchBarPanel = document.getElementById("searchBarPanel");
@@ -11,11 +7,6 @@ const searchPanel = document.getElementById("searchPanel");
 const fullView = document.getElementById("fullView");
 const form1 = document.getElementById("searchBarMain");
 const form2 = document.getElementById("searchBarPanel");
-
-
-/*URLS*/
-const LF_baseUrl = "https://ws.audioscrobbler.com/2.0/";
-const format = "json";
 
 /* OTHER STUFF */
 let ytPlayer;
@@ -65,9 +56,9 @@ form2.addEventListener('submit', async function(e) {
 
 // Search function
 async function performSearch(query) {
-    const trackUrl = `${LF_baseUrl}?method=track.search&track=${encodeURIComponent(query)}&api_key=${LAST_FM_API_KEY}&format=${format}`;
-    const artistUrl = `${LF_baseUrl}?method=artist.search&artist=${encodeURIComponent(query)}&api_key=${LAST_FM_API_KEY}&format=${format}`;
-    const albumUrl = `${LF_baseUrl}?method=album.search&album=${encodeURIComponent(query)}&api_key=${LAST_FM_API_KEY}&format=${format}`;
+    const trackUrl = `/api/lastfm?method=track.search&track=${encodeURIComponent(query)}`;
+    const artistUrl = `/api/lastfm?method=artist.search&artist=${encodeURIComponent(query)}`;
+    const albumUrl = `/api/lastfm?method=album.search&album=${encodeURIComponent(query)}`;
 
     try {
         const [trackResult, artistResult, albumResult] = await Promise.all([
@@ -136,7 +127,7 @@ function findAlbumArtFromSearch(trackName, artistName) {
 }
 
 async function fetchYTArtistImage(artistName) {
-  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${encodeURIComponent(artistName)}&key=${YT_API_KEY}`;
+  const url = `/api/youtube?part=snippet&type=channel&q=${encodeURIComponent(artistName)}`;
   
   try {
     const res = await fetch(url);
@@ -347,7 +338,7 @@ function renderAlbumsInFullView() {
 
 // Function to get album tracks using album.getInfo
 async function getAlbumTracks(artistName, albumName) {
-    const albumInfoUrl = `${LF_baseUrl}?method=album.getInfo&artist=${encodeURIComponent(artistName)}&album=${encodeURIComponent(albumName)}&api_key=${LAST_FM_API_KEY}&format=${format}`;
+    const albumInfoUrl = `/api/lastfm?method=album.getInfo&artist=${encodeURIComponent(artistName)}&album=${encodeURIComponent(albumName)}`;
     
     try {
         const response = await fetch(albumInfoUrl);
@@ -461,14 +452,14 @@ async function playTrack(track) {
     const albumArt = document.getElementById("albumArt");
     const progressBar = document.getElementById("progressBar");
     const playButton = document.getElementById("playButton");
-    const trackInfo = `${LF_baseUrl}?method=track.getInfo&artist=${track.artist}&track=${track.name}&api_key=${LAST_FM_API_KEY}&format=${format}`;
+    const trackInfo = `/api/lastfm?method=track.getInfo&artist=${track.artist}&track=${track.name}`;
 
   
     stopProgressUpdater(); 
     progressBar.style.width = "0%";
 
     try {
-        const ytRes = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(songQuery)}&key=${YT_API_KEY}&maxResults=1&type=video`);
+        const ytRes = await fetch(`/api/youtube?part=snippet&q=${encodeURIComponent(songQuery)}&maxResults=1&type=video`);
         const ytData = await ytRes.json();
         const videoId = ytData.items?.[0]?.id?.videoId;
 
@@ -491,7 +482,7 @@ async function playTrack(track) {
             }
 
             if (!albumArtUrl) {
-                const topAlbumUrl = `${LF_baseUrl}?method=artist.getTopAlbums&artist=${encodeURIComponent(track.artist)}&api_key=${LAST_FM_API_KEY}&format=${format}&limit=1`;
+                const topAlbumUrl = `/api/lastfm?method=artist.getTopAlbums&artist=${encodeURIComponent(track.artist)}&limit=1`;
                 const topAlbumRes = await fetch(topAlbumUrl);
                 const topAlbumData = await topAlbumRes.json();
                 const topAlbum = topAlbumData.topalbums?.album?.[0];
