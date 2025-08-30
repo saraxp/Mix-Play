@@ -24,7 +24,7 @@ export default async function handler(request, response) {
     
     // 3. If still nothing, send a fallback
     if (!imageUrl) {
-        imageUrl = "assests/fallback.jpg";
+        imageUrl = "assests/fallback.png";
     }
 
     response.status(200).json({ imageUrl });
