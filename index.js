@@ -27,6 +27,14 @@ musicPlayer.addEventListener("click", function () {
   resetToMainSearch();
 });
 
+const PanelClose = document.getElementById("backToMPButton");
+if (PanelClose) {
+    PanelClose.addEventListener('click', () => {
+        resetToMainSearch(); 
+    });
+}
+
+
 
 /* TAKING SEARCH INPUT */
 
@@ -40,7 +48,9 @@ form1.addEventListener('submit', async function(e) {
         showSearchPanelOnly(); 
         searchInputPanel.focus();
     }
+    form1.reset();
 });
+
 
 // Form 2 submission (panel search bar)
 form2.addEventListener('submit', async function(e) {
@@ -52,7 +62,9 @@ form2.addEventListener('submit', async function(e) {
         showSearchPanelOnly();  
         searchInputPanel.focus(); 
     }
+    form2.reset();
 });
+
 
 // Search function
 async function performSearch(query) {
@@ -133,11 +145,11 @@ async function fetchYTArtistImage(artistName) {
     const res = await fetch(url);
     const data = await res.json();
     const channel = data.items?.[0];
-    const imageUrl = channel?.snippet?.thumbnails?.high?.url || "fallback.jpg";
+    const imageUrl = channel?.snippet?.thumbnails?.high?.url || "assests/fallback.png";
     return imageUrl;
   } catch (err) {
     console.error("YouTube channel fetch failed:", err);
-    return "fallback.jpg";
+    return "assests/fallback.png";
   }
 }
 
@@ -383,7 +395,7 @@ async function showAlbumTracks(albumName, artistName) {
         fullList.innerHTML = `
             <div class="album-header">
                 <button id="backToAlbumsBtn" class="back-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="000000" viewBox="0 0 256 256"><path d="M205.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L131.31,128ZM51.31,128l74.35-74.34a8,8,0,0,0-11.32-11.32l-80,80a8,8,0,0,0,0,11.32l80,80a8,8,0,0,0,11.32-11.32Z"></path></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
                 Back to Albums</button>
                 <h3>${albumName}</h3>
                 <p>${artistName}</p>
@@ -433,7 +445,7 @@ async function showAlbumTracks(albumName, artistName) {
         fullList.innerHTML = `
             <div class="album-header">
                 <button id="backToAlbumsBtn" class="back-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="000000" viewBox="0 0 256 256"><path d="M205.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L131.31,128ZM51.31,128l74.35-74.34a8,8,0,0,0-11.32-11.32l-80,80a8,8,0,0,0,0,11.32l80,80a8,8,0,0,0,11.32-11.32Z"></path></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="000000" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
                 Back to Albums</button>
                 <h3>${albumName}</h3>
                 <p>${artistName}</p>
@@ -478,7 +490,7 @@ async function playTrack(track) {
         } catch (artErr) {
             console.warn("Album art fallback used:", artErr);
             document.getElementById("albumArtContainer").classList.remove("hidden");
-            albumArt.src = "fallback.jpg"; // Your local fallback image
+            albumArt.src = "assests/fallback.png"; 
         }
 
         songName.textContent = track.name;

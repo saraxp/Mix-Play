@@ -46,9 +46,15 @@
              SEARCH BAR GOES INSIDE, PANEL CLOSES WHEN TAPPED ANYWHERE ELSE ON THE SCREEN.
              THE MUSIC PLAYER PART ADJUSTS ITSELF ACCORDINGLY.
              -->
-            <form class="search-bar-panel" id="searchBarPanel">
-                <input class = "search-input" id = "searchInputPanel" type="search" placeholder="Search songs, albums or artists" autocomplete="off">
-            </form>
+             <div class="search-panel-header">
+                <form class="search-bar-panel" id="searchBarPanel">
+                    <input class = "search-input" id = "searchInputPanel" type="search" placeholder="Search songs, albums or artists" autocomplete="off">
+                </form>
+                <button id="backToMPButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="rgb(232, 240, 239)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-right-close-icon lucide-panel-right-close"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/><path d="m8 9 3 3-3 3"/></svg>
+                </button>
+
+             </div>
             <div class = "search-results" id = "results">
                 <div id="artistsSection"></div>
                 <div id="songsSection"></div>
@@ -57,7 +63,7 @@
         </div>
         <div id="fullView" class="full-view hidden">
             <button id="backToSummaryBtn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="rgb(232, 240, 239)" viewBox="0 0 256 256"><path d="M205.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L131.31,128ZM51.31,128l74.35-74.34a8,8,0,0,0-11.32-11.32l-80,80a8,8,0,0,0,0,11.32l80,80a8,8,0,0,0,11.32-11.32Z"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="rgb(232, 240, 239)" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
             </button>
             <div id="fullList" class="scrollable-list"></div>
         </div>
