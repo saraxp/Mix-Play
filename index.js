@@ -452,9 +452,7 @@ async function playTrack(track) {
     const albumArt = document.getElementById("albumArt");
     const progressBar = document.getElementById("progressBar");
     const playButton = document.getElementById("playButton");
-    const trackInfo = `/api/lastfm?method=track.getInfo&artist=${track.artist}&track=${track.name}`;
 
-  
     stopProgressUpdater(); 
     progressBar.style.width = "0%";
 
@@ -465,45 +463,22 @@ async function playTrack(track) {
 
         console.log("YouTube video ID:", videoId);
 
-
+        // Fetch album art with a single, optimized API call
         try {
-            let albumArtUrl = null;
+            const artResponse = await fetch(`/api/getAlbumArt?artist=${encodeURIComponent(track.artist)}&track=${encodeURIComponent(track.name)}`);
+            const artData = await artResponse.json();
 
-            const albumArtFetch = await fetch(trackInfo);
-            const trackData = await albumArtFetch.json();
-
-            if (trackData.track?.album?.image) {
-                const imageObj = trackData.track.album.image.find(img => img.size === 'extralarge');
-                albumArtUrl = imageObj?.['#text'] || null;
-            }
-
-            if (!albumArtUrl) {
-                albumArtUrl = findAlbumArtFromSearch(track.name, track.artist);
-            }
-
-            if (!albumArtUrl) {
-                const topAlbumUrl = `/api/lastfm?method=artist.getTopAlbums&artist=${encodeURIComponent(track.artist)}&limit=1`;
-                const topAlbumRes = await fetch(topAlbumUrl);
-                const topAlbumData = await topAlbumRes.json();
-                const topAlbum = topAlbumData.topalbums?.album?.[0];
-                albumArtUrl = await getAlbumArtByName(track.artist, topAlbum?.name);
-            }
-
-            if (albumArtUrl && albumArtUrl !== "") {
-                albumArt.src = albumArtUrl;
+            if (artData.imageUrl) {
+                albumArt.src = artData.imageUrl;
                 document.getElementById("albumArtContainer").classList.remove("hidden");
                 albumArt.classList.remove("hidden");
             } else {
-                albumArt.src = "fallback.jpg";
-                document.getElementById("albumArtContainer").classList.remove("hidden");
-                albumArt.classList.remove("hidden");
+                 throw new Error("No image URL returned");
             }
-
-
         } catch (artErr) {
-            console.warn("Album art fallback used");
+            console.warn("Album art fallback used:", artErr);
             document.getElementById("albumArtContainer").classList.remove("hidden");
-            albumArt.src = "fallback.jpg";
+            albumArt.src = "fallback.jpg"; // Your local fallback image
         }
 
         songName.textContent = track.name;
@@ -637,7 +612,3 @@ document.getElementById("playButton").addEventListener("click", () => {
 document.addEventListener('DOMContentLoaded', () => {
   LoadQueueFromStorage();
 });
-
-
-
-
