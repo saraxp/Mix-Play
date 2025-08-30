@@ -1,6 +1,7 @@
 /* API KEYS */
 const YT_API_KEY = "Your YT API Key";
 const LAST_FM_API_KEY = "Your Lastfm API Key";
+
 /* SOME ELEMENTS */
 const searchBarMain = document.getElementById("searchBarMain");
 const searchBarPanel = document.getElementById("searchBarPanel");
@@ -537,6 +538,25 @@ async function playTrack(track) {
     }
 }
 
+//to save songs in playback queue
+function saveQueueToStorage() {
+  localStorage.setItem('musicQueue', JSON.stringify(playbackQueue));
+  localStorage.setItem('currentTrackIndex', currentTrackIndex.toString());
+}
+
+//to load songs in playback queue
+function LoadQueueFromStorage() {
+  const savedQueue = localStorage.getItem('musicQueue');
+  const savedIndex = localStorage.getItem('currentTrackIndex');
+
+  if(savedQueue) {
+    playbackQueue = JSON.parse(savedQueue);
+  }
+  if(savedIndex) {
+    currentTrackIndex = parseInt(savedIndex);
+  }
+}
+
 //to add songs in playback queue
 function handleSongClick(track) {
   const indexInQueue = playbackQueue.findIndex(
@@ -551,7 +571,9 @@ function handleSongClick(track) {
   }
 
   playTrack(track);
+  saveQueueToStorage();
 }
+
 
 // progress bar functions
 function startProgressUpdater() {
@@ -578,6 +600,7 @@ document.getElementById("nextButton").addEventListener("click", () => {
   if (playbackQueue.length > 0 && currentTrackIndex < playbackQueue.length - 1) {
     currentTrackIndex++;
     playTrack(playbackQueue[currentTrackIndex]);
+    saveQueueToStorage();
   }
 });
 
@@ -585,6 +608,7 @@ document.getElementById("prevButton").addEventListener("click", () => {
   if (playbackQueue.length > 0 && currentTrackIndex > 0) {
     currentTrackIndex--;
     playTrack(playbackQueue[currentTrackIndex]);
+    saveQueueToStorage();
   }
 });
 
@@ -616,6 +640,11 @@ document.getElementById("playButton").addEventListener("click", () => {
     stopProgressUpdater();
     isPlaying = false;
   }
+});
+
+// on screen load
+document.addEventListener('DOMContentLoaded', () => {
+  LoadQueueFromStorage();
 });
 
 
