@@ -126,16 +126,7 @@ function resetToMainSearch() {
 }
 
 function findAlbumArtFromSearch(trackName, artistName) {
-    const matchingAlbum = globalAlbumList.find(album => 
-        album.artist.toLowerCase() === artistName.toLowerCase()
-    );
-    
-    if (matchingAlbum && matchingAlbum.image) {
-        const albumArtImage = matchingAlbum.image.find(img => img.size === 'extralarge');
-        return albumArtImage ? albumArtImage['#text'] : null;
-    }
-    
-    return null;
+    return MusicPlayerUtils.findAlbumArtFromSearch(globalAlbumList, trackName, artistName);
 }
 
 async function fetchYTArtistImage(artistName) {
@@ -518,35 +509,21 @@ async function playTrack(track) {
 
 //to save songs in playback queue
 function saveQueueToStorage() {
-  localStorage.setItem('musicQueue', JSON.stringify(playbackQueue));
-  localStorage.setItem('currentTrackIndex', currentTrackIndex.toString());
+  MusicPlayerUtils.saveQueueToStorage(playbackQueue, currentTrackIndex);
 }
 
 //to load songs in playback queue
 function LoadQueueFromStorage() {
-  const savedQueue = localStorage.getItem('musicQueue');
-  const savedIndex = localStorage.getItem('currentTrackIndex');
-
-  if(savedQueue) {
-    playbackQueue = JSON.parse(savedQueue);
-  }
-  if(savedIndex) {
-    currentTrackIndex = parseInt(savedIndex);
-  }
+  const { queue, currentIndex } = MusicPlayerUtils.loadQueueFromStorage();
+  playbackQueue = queue;
+  currentTrackIndex = currentIndex;
 }
 
 //to add songs in playback queue
 function handleSongClick(track) {
-  const indexInQueue = playbackQueue.findIndex(
-    t => t.name === track.name && t.artist === track.artist
-  );
-
-  if (indexInQueue === -1) {
-    playbackQueue.push(track);
-    currentTrackIndex = playbackQueue.length - 1;
-  } else {
-    currentTrackIndex = indexInQueue;
-  }
+  const { queue, currentIndex } = MusicPlayerUtils.handleSongClick(playbackQueue, currentTrackIndex, track);
+  playbackQueue = queue;
+  currentTrackIndex = currentIndex;
 
   playTrack(track);
   saveQueueToStorage();
