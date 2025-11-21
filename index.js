@@ -144,7 +144,7 @@ async function fetchYTArtistImage(artistName) {
   }
 }
 
-
+let ytPlayerReady = false;
 /* YT PLAYER FUNCTION */
 function onYouTubeIframeAPIReady() {
   ytPlayer = new YT.Player("youtubePlayer", {
@@ -152,7 +152,10 @@ function onYouTubeIframeAPIReady() {
     width: "0px",
     videoId: "",
     events: {
-      onReady: () => console.log("YouTube player ready"),
+      onReady: (event) => {
+        console.log("YouTube player ready");
+        ytPlayerReady = true;
+      },
       onStateChange: onPlayerStateChange
     }
   });
@@ -487,7 +490,7 @@ async function playTrack(track) {
         songName.textContent = track.name;
         artistName.textContent = track.artist;
 
-        if (videoId && ytPlayer?.loadVideoById) {
+        if (videoId && ytPlayer && ytPlayerReady && ytPlayer.loadVideoById) {
             ytPlayer.loadVideoById(videoId);
             ytPlayer.playVideo();             
             isPlaying = true;                 

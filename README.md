@@ -29,6 +29,7 @@ Mix-Play/
 * Vanilla JavaScript: Core functionality and API interactions
 * Last.fm API: Music metadata, search, and artist information
 * YouTube API: Video search and embedded player for audio streaming
+* Jest: For unit testing
 
 ## 🔐 API Configuration
 
@@ -43,6 +44,15 @@ Mix-Play/
 * Video Search: Search for audio content
 * Iframe Player: Embedded player for streaming
 * Channel Data: Artist images and thumbnails
+
+## Testing
+
+This project includes comprehensive unit tests using Jest.
+
+- **23 test cases** covering core functionality
+- Tests include: album art matching, localStorage operations, queue management, and time formatting
+- Run tests: `npm test`
+- Generate coverage report: `npm run test:coverage`
 
 ## 📷 Preview
 
